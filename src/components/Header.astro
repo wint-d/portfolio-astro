@@ -1,0 +1,181 @@
+---
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Projects", href: "/projects" },
+  { name: "Skills", href: "/skills" },
+  { name: "Contact", href: "/contact" },
+];
+---
+
+<div class="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+  <nav
+    id="site-nav"
+    class="site-nav flex h-12 items-center overflow-hidden rounded-full border bg-background/80 shadow-lg backdrop-blur-sm"
+  >
+    <div class="site-nav-logo flex flex-shrink-0 items-center pl-2 pr-2 font-semibold"></div>
+
+    <div class="site-nav-links flex items-center gap-1 pr-4 sm:gap-4">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {item.name}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="site-nav-collapsed-icon pointer-events-none absolute inset-0 flex items-center justify-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-6 w-6"
+        aria-hidden="true"
+      >
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="6" y2="6"></line>
+        <line x1="4" x2="20" y1="18" y2="18"></line>
+      </svg>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .site-nav {
+    position: relative;
+    opacity: 0;
+    transform: translateY(-80px);
+    transition:
+      width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.3s ease;
+  }
+
+  .site-nav.is-mounted {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .site-nav.is-collapsed {
+    cursor: pointer;
+    justify-content: center;
+  }
+
+  .site-nav-logo {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .site-nav.is-collapsed .site-nav-logo {
+    opacity: 0;
+    transform: translateX(-25px) rotate(-180deg);
+  }
+
+  .site-nav-links {
+    transition: opacity 0.2s ease;
+  }
+
+  .site-nav-links a {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .site-nav.is-collapsed .site-nav-links {
+    pointer-events: none;
+  }
+
+  .site-nav.is-collapsed .site-nav-links a {
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+  }
+
+  .site-nav-collapsed-icon {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;
+  }
+
+  .site-nav.is-collapsed .site-nav-collapsed-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+
+<script>
+  const EXPAND_SCROLL_THRESHOLD = 80;
+  const COLLAPSE_AT_SCROLL_Y = 150;
+
+  const nav = document.getElementById("site-nav");
+
+  if (nav) {
+    let isExpanded = true;
+    let lastScrollY = window.scrollY;
+    let scrollYAtCollapse = 0;
+    let expandedWidth = 0;
+
+    const measureExpandedWidth = () => {
+      const previousWidth = nav.style.width;
+      nav.style.width = "auto";
+      expandedWidth = nav.getBoundingClientRect().width;
+      nav.style.width = previousWidth;
+    };
+
+    const setExpanded = (next: boolean) => {
+      isExpanded = next;
+      nav.classList.toggle("is-collapsed", !next);
+      nav.style.width = next ? `${expandedWidth}px` : "3rem";
+    };
+
+    measureExpandedWidth();
+    nav.style.width = `${expandedWidth}px`;
+
+    requestAnimationFrame(() => {
+      nav.classList.add("is-mounted");
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const current = window.scrollY;
+
+        if (isExpanded && current > lastScrollY && current > COLLAPSE_AT_SCROLL_Y) {
+          setExpanded(false);
+          scrollYAtCollapse = current;
+        } else if (
+          !isExpanded &&
+          current < lastScrollY &&
+          scrollYAtCollapse - current > EXPAND_SCROLL_THRESHOLD
+        ) {
+          setExpanded(true);
+        }
+
+        lastScrollY = current;
+      },
+      { passive: true }
+    );
+
+    nav.addEventListener("click", (e) => {
+      if (!isExpanded) {
+        e.preventDefault();
+        setExpanded(true);
+      }
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", (e) => e.stopPropagation());
+    });
+
+    window.addEventListener("resize", () => {
+      measureExpandedWidth();
+      if (isExpanded) nav.style.width = `${expandedWidth}px`;
+    });
+  }
+</script>
