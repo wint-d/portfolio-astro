@@ -1,0 +1,58 @@
+---
+const projects = [
+	{
+		name: "Project One",
+		description:
+			"A short description of what this project does and the problem it solves.",
+		tags: ["React", "TypeScript"],
+		href: "#",
+	},
+	{
+		name: "Project Two",
+		description:
+			"A short description of what this project does and the problem it solves.",
+		tags: ["Astro", "Tailwind CSS"],
+		href: "#",
+	},
+	{
+		name: "Project Three",
+		description:
+			"A short description of what this project does and the problem it solves.",
+		tags: ["Next.js", "Accessibility"],
+		href: "#",
+	},
+];
+---
+
+<section id="projects" class="scroll-mt-24 px-6 py-24">
+	<div class="mx-auto w-full max-w-6xl">
+		<h2 class="text-3xl font-bold text-foreground">Projects</h2>
+
+		<ul class="mt-10 grid gap-6 sm:grid-cols-2">
+			{
+				projects.map((project) => (
+					<li>
+						<a
+							href={project.href}
+							class="block h-full rounded-lg border bg-card p-6 transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+						>
+							<h3 class="font-semibold text-foreground">
+								{project.name}
+							</h3>
+							<p class="mt-2 text-sm text-muted-foreground">
+								{project.description}
+							</p>
+							<ul class="mt-4 flex flex-wrap gap-2">
+								{project.tags.map((tag) => (
+									<li class="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
+										{tag}
+									</li>
+								))}
+							</ul>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

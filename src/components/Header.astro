@@ -13,9 +13,10 @@ const navItems = [
     id="site-nav"
     class="site-nav flex h-12 items-center overflow-hidden rounded-full border bg-background/80 shadow-lg backdrop-blur-sm"
   >
-    <div class="site-nav-logo flex flex-shrink-0 items-center pl-2 pr-2 font-semibold"></div>
+    <div class="site-nav-logo flex flex-shrink-0 items-center font-semibold">
+    </div>
 
-    <div class="site-nav-links flex items-center gap-1 pr-4 sm:gap-4">
+    <div class="site-nav-links flex items-center gap-1 pl-4 pr-4 sm:gap-4">
       {
         navItems.map((item) => (
           <a
@@ -28,7 +29,9 @@ const navItems = [
       }
     </div>
 
-    <div class="site-nav-collapsed-icon pointer-events-none absolute inset-0 flex items-center justify-center">
+    <div
+      class="site-nav-collapsed-icon pointer-events-none absolute inset-0 flex items-center justify-center"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -72,7 +75,9 @@ const navItems = [
   }
 
   .site-nav-logo {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
   }
 
   .site-nav.is-collapsed .site-nav-logo {
@@ -85,7 +90,9 @@ const navItems = [
   }
 
   .site-nav-links a {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
   }
 
   .site-nav.is-collapsed .site-nav-links {
@@ -100,7 +107,9 @@ const navItems = [
   .site-nav-collapsed-icon {
     opacity: 0;
     transform: scale(0.8);
-    transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;
+    transition:
+      opacity 0.2s ease 0.1s,
+      transform 0.2s ease 0.1s;
   }
 
   .site-nav.is-collapsed .site-nav-collapsed-icon {
@@ -146,7 +155,11 @@ const navItems = [
       () => {
         const current = window.scrollY;
 
-        if (isExpanded && current > lastScrollY && current > COLLAPSE_AT_SCROLL_Y) {
+        if (
+          isExpanded &&
+          current > lastScrollY &&
+          current > COLLAPSE_AT_SCROLL_Y
+        ) {
           setExpanded(false);
           scrollYAtCollapse = current;
         } else if (
@@ -159,7 +172,7 @@ const navItems = [
 
         lastScrollY = current;
       },
-      { passive: true }
+      { passive: true },
     );
 
     nav.addEventListener("click", (e) => {

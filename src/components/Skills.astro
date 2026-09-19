@@ -1,0 +1,40 @@
+---
+
+const skillGroups = [
+	{
+		title: "Languages",
+		items: ["HTML", "CSS", "JavaScript", "TypeScript"],
+	},
+	{
+		title: "Frameworks & Libraries",
+		items: ["React", "Next.js", "Astro", "Tailwind CSS"],
+	},
+	{
+		title: "Tools",
+		items: ["Git", "Vite", "Figma"],
+	},
+];
+---
+
+<section id="skills" class="scroll-mt-24 px-6 py-24">
+	<div class="mx-auto w-full max-w-6xl">
+		<h2 class="text-3xl font-bold text-foreground">Skills</h2>
+
+		<div class="mt-10 grid gap-8 sm:grid-cols-3">
+			{
+				skillGroups.map((group) => (
+					<div>
+						<h3 class="text-sm font-semibold tracking-wide text-muted-foreground">
+							{group.title}
+						</h3>
+						<ul class="mt-3 space-y-2">
+							{group.items.map((item) => (
+								<li class="text-foreground">{item}</li>
+							))}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
